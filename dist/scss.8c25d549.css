@@ -1,0 +1,109 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#player {
+  height: 100vh;
+  background: #070d41;
+}
+#player .header {
+  text-align: center;
+}
+#player .header h1 {
+  color: white;
+  font-size: 20px;
+  padding-top: 20px;
+}
+#player .header p {
+  color: #868aaf;
+  font-size: 12px;
+}
+#player .area-effect {
+  margin-top: 16px;
+}
+#player .area-effect .balls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#player .area-effect .balls span {
+  display: block;
+  width: 5px;
+  height: 5px;
+  background: #54173f;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+#player .area-effect .balls span.current {
+  width: 8px;
+  height: 8px;
+  background: #d562ae;
+}
+#player .panel-effect .effect {
+  position: relative;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#player .panel-effect .effect > div {
+  background-size: contain;
+  position: absolute;
+}
+#player .panel-effect .effect .effect-1 {
+  position: absolute;
+  background: url("/effect-no-move.e6a51026.svg") 0 0 no-repeat;
+  width: 66vw;
+  height: 66vw;
+  animation: rotate 20s linear infinite;
+}
+#player .panel-effect .effect .effect-2 {
+  position: absolute;
+  background: url("/effect-move1.8d0ce205.svg") 0 0 no-repeat;
+  width: 60vw;
+  height: 60vw;
+  animation: rotate 10s linear infinite reverse;
+}
+#player .panel-effect .effect .effect-3 {
+  position: absolute;
+  background: url("/effect-move2.143040a0.svg") 0 0 no-repeat;
+  width: 25vw;
+  height: 25vw;
+  animation: rotate 10s linear infinite;
+}
+#player .panel-effect .lyrics {
+  text-align: center;
+}
+#player .panel-effect .lyrics p {
+  font-size: 13px;
+  color: #868aaf;
+  margin-top: 8px;
+}
+#player .panel-effect .lyrics p.current {
+  color: white;
+}
+#player .buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+#player .buttons svg {
+  width: 24px;
+  height: 24px;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*# sourceMappingURL=/scss.8c25d549.css.map */
