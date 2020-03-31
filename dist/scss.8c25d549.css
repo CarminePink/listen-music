@@ -15,6 +15,7 @@
   color: white;
   font-size: 20px;
   padding-top: 20px;
+  font-weight: normal;
 }
 #player .header p {
   color: #868aaf;
@@ -86,15 +87,65 @@
 }
 #player .buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
   margin-left: 30px;
   margin-right: 30px;
 }
 #player .buttons svg {
+  margin: 0 14px;
   width: 24px;
   height: 24px;
+}
+#player .area-bar {
+  font-size: 12px;
+  color: #868aaf;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  margin-top: 15px;
+}
+#player .area-bar .bar {
+  flex-grow: 1;
+  background: #1140fc;
+  height: 4px;
+  margin: 0 10px;
+  border-radius: 2px;
+}
+#player .area-bar .bar .progress {
+  width: 50%;
+  height: 100%;
+  border-radius: 2px;
+  position: relative;
+  background: #d562ae;
+}
+#player .area-bar .bar .progress:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 0;
+  top: -7px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: url("/progress.798a5c76.svg") 0 0 no-repeat;
+  background-size: contain;
+}
+#player .actions {
+  margin-top: 20px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#player .actions svg {
+  height: 28px;
+  width: 28px;
+}
+#player .actions svg.btn-play-pause {
+  height: 50px;
+  width: 50px;
 }
 
 @keyframes rotate {

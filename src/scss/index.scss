@@ -23,6 +23,7 @@ $color3: #1140fc;
          color: $color;
          font-size: 20px;
          padding-top: 20px;
+         font-weight: normal;
       }
 
       p {
@@ -108,14 +109,66 @@ $color3: #1140fc;
 
    .buttons{
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       margin-top: 20px;
       margin-left: 30px;
       margin-right: 30px;
       svg{
+         margin: 0 14px;
          width: 24px;
          height: 24px;
+      }
+   }
+
+   .area-bar{
+      font-size: 12px;
+      color: $color1;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      margin-top: 15px;
+      .bar{
+         flex-grow: 1;
+         background: $color3;
+         height: 4px;
+         margin: 0 10px;
+         border-radius: 2px;
+         .progress{
+            width: 50%;
+            height: 100%;
+            border-radius: 2px;
+            position: relative;
+            background: $color2;
+            &:after{
+               content: '';
+               display: block;
+               position: absolute;
+               right: 0;
+               top: -7px;
+               width: 16px;
+               height: 16px;
+               border-radius: 50%;
+               background: url("../svg/progress.svg") 0 0 no-repeat;
+               background-size: contain;
+            }
+         }
+      }
+   }
+
+   .actions{
+      margin-top: 20px;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      svg{
+         height: 28px;
+         width: 28px;
+         &.btn-play-pause{
+            height: 50px;
+            width: 50px;
+         }
       }
    }
 }
