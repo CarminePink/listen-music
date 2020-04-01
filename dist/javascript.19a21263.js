@@ -130,7 +130,55 @@ string.innerHTML = "\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg style=\"d
 
 require("./icons.js");
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+//http://carminepink.xyz/data-mock/huawei-music/music-list.json
+//https://jirengu.github.io/data-mock/huawei-music/music-list.json
 console.log('hi');
+
+var $ = function $(selector) {
+  document.querySelector(selector);
+};
+
+var $$ = function $$(selector) {
+  document.querySelectorAll(selector);
+};
+
+var Player = /*#__PURE__*/function () {
+  function Player(node) {
+    _classCallCheck(this, Player);
+
+    this.root = typeof node === 'string' ? $(node) : node;
+    this.songList = [];
+    this.currenIndex = 0;
+    this.start();
+  }
+
+  _createClass(Player, [{
+    key: "bind",
+    value: function bind() {}
+  }, {
+    key: "start",
+    value: function start() {
+      var _this = this;
+
+      fetch('http://carminepink.xyz/data-mock/huawei-music/music-list.json').then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        console.log(data);
+        _this.songList = data;
+      });
+    }
+  }]);
+
+  return Player;
+}();
+
+new Player('#player');
 },{"./icons.js":"src/javascript/icons.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
