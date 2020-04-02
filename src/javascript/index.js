@@ -33,24 +33,62 @@ class Player {
       let self = this
       const playOrPauseButton = this.root.querySelector('.btn-play-pause')
       playOrPauseButton.onclick = function () {
-         console.log(this)
          if (this.classList.contains('playing')) {
             self.audio.pause()
             this.classList.remove('playing')
-            this.classList.add('pause')
+            this.classList.add('pausing')
             this.querySelector('use').setAttribute('xlink:href', '#icon-play')
-
-         } else if (this.classList.contains('pause')) {
+         } else if (this.classList.contains('pausing')) {
             self.audio.play()
-            this.classList.remove('pause')
+            this.classList.remove('pausing')
             this.classList.add('playing')
             this.querySelector('use').setAttribute('xlink:href', '#icon-pause')
          }
       }
+
+      const nextButton = this.root.querySelector('.btn-next')
+      const preButton = this.root.querySelector('.btn-pre')
+      nextButton.onclick = function () {
+         self.playNextSong()
+      }
+      preButton.onclick = function () {
+         self.playPreSong()
+      }
+
    }
 
-   playSong() {
+   playStatus(){
+      const playOrpauseButton = this.root.querySelector('.btn-play-pause')
+      const status = playOrpauseButton.querySelector('use').getAttribute('xlink:href')
+      if(playOrpauseButton.classList.contains('pausing')){
+         playOrpauseButton.classList.remove('pausing')
+         playOrpauseButton.classList.add('playing')
+      }
+      if (status === '#icon-pause') {
+      } else if (status === '#icon-play') {
+         playOrpauseButton.querySelector('use').setAttribute('xlink:href', '#icon-pause')
+      }
    }
+
+   playNextSong() {
+      const length = this.songList.length
+      this.currenIndex = (length + this.currenIndex - 1) % length
+      this.audio.src = this.songList[this.currenIndex].url
+      console.log(this.audio)
+      this.audio.play()
+      this.playStatus()
+   }
+
+   playPreSong() {
+      const length = this.songList.length
+      this.currenIndex = (length + this.currenIndex + 1) % length
+      this.audio.src = this.songList[this.currenIndex].url
+      console.log(this.audio)
+      this.audio.play()
+      this.playStatus()
+   }
+
+
 }
 
 new Player('#player')

@@ -15,7 +15,7 @@ $color3: #1140fc;
 #player {
    height: 100vh;
    background: $backgroundColor;
-
+   overflow: hidden;
    .header {
       height:100px;
       text-align: center;
