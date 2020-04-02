@@ -25,6 +25,7 @@ class Player {
          .then(data => {
             console.log(data)
             this.songList = data
+            this.audio.src = this.songList[this.currenIndex].url
          })
    }
 
@@ -32,15 +33,18 @@ class Player {
       let self = this
       const playOrPauseButton = this.root.querySelector('.btn-play-pause')
       playOrPauseButton.onclick = function () {
-         self.audio.src = self.songList[self.currenIndex].url
+         console.log(this)
          if (this.classList.contains('playing')) {
             self.audio.pause()
             this.classList.remove('playing')
             this.classList.add('pause')
+            this.querySelector('use').setAttribute('xlink:href', '#icon-play')
+
          } else if (this.classList.contains('pause')) {
             self.audio.play()
             this.classList.remove('pause')
             this.classList.add('playing')
+            this.querySelector('use').setAttribute('xlink:href', '#icon-pause')
          }
       }
    }
