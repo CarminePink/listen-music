@@ -1,4 +1,5 @@
 import './icons.js'
+import Swiper from './swiper.js'
 //http://carminepink.xyz/data-mock/huawei-music/music-list.json
 //https://jirengu.github.io/data-mock/huawei-music/music-list.json
 
@@ -54,7 +55,17 @@ class Player {
       preButton.onclick = function () {
          self.playPreSong()
       }
-
+      let swipe = new Swiper(document.querySelector('.panels'))
+      swipe.on('swipeLeft',()=>{
+         const panelPage = this.root.querySelector('.panels')
+         panelPage.classList.remove('panel2')
+         panelPage.classList.add('panel1')
+      })
+      swipe.on('swipeRight',()=>{
+         const panelPage = this.root.querySelector('.panels')
+         panelPage.classList.remove('panel1')
+         panelPage.classList.add('panel2')
+      })
    }
 
    playStatus(){
@@ -75,7 +86,7 @@ class Player {
       this.currenIndex = (length + this.currenIndex - 1) % length
       this.audio.src = this.songList[this.currenIndex].url
       console.log(this.audio)
-      this.audio.play()
+      this.audio.oncanplaythrough = ()=>this.audio.play()
       this.playStatus()
    }
 
@@ -84,11 +95,9 @@ class Player {
       this.currenIndex = (length + this.currenIndex + 1) % length
       this.audio.src = this.songList[this.currenIndex].url
       console.log(this.audio)
-      this.audio.play()
+      this.audio.oncanplaythrough = ()=>this.audio.play()
       this.playStatus()
    }
-
-
 }
 
 new Player('#player')
