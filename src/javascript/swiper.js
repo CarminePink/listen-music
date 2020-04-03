@@ -16,9 +16,9 @@ class Swiper {
          }
          timeID = setInterval(() => {
             newX = e.touches[0].clientX
-            if (newX - initX >= 0) {
+            if (newX - initX >= 20) {
                eventBus.swipeLeft.forEach((item, index) => item())
-            } else {
+            } else if (initX - newX >= 20) {
                eventBus.swipeRight.forEach((item, index) => item())
             }
             window.clearInterval(timeID)

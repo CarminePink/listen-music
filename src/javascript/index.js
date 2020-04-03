@@ -27,6 +27,7 @@ class Player {
             console.log(data)
             this.songList = data
             this.audio.src = this.songList[this.currenIndex].url
+            this.renderSong()
          })
    }
 
@@ -56,22 +57,22 @@ class Player {
          self.playPreSong()
       }
       let swipe = new Swiper(document.querySelector('.panels'))
-      swipe.on('swipeLeft',()=>{
-         const panelPage = this.root.querySelector('.panels')
+      swipe.on('swipeLeft', () => {
+         const panelPage = document.querySelector('.panels')
          panelPage.classList.remove('panel2')
          panelPage.classList.add('panel1')
       })
-      swipe.on('swipeRight',()=>{
-         const panelPage = this.root.querySelector('.panels')
+      swipe.on('swipeRight', () => {
+         const panelPage = document.querySelector('.panels')
          panelPage.classList.remove('panel1')
          panelPage.classList.add('panel2')
       })
    }
 
-   playStatus(){
+   playStatus() {
       const playOrpauseButton = this.root.querySelector('.btn-play-pause')
       const status = playOrpauseButton.querySelector('use').getAttribute('xlink:href')
-      if(playOrpauseButton.classList.contains('pausing')){
+      if (playOrpauseButton.classList.contains('pausing')) {
          playOrpauseButton.classList.remove('pausing')
          playOrpauseButton.classList.add('playing')
       }
@@ -85,8 +86,8 @@ class Player {
       const length = this.songList.length
       this.currenIndex = (length + this.currenIndex - 1) % length
       this.audio.src = this.songList[this.currenIndex].url
-      console.log(this.audio)
-      this.audio.oncanplaythrough = ()=>this.audio.play()
+      this.audio.oncanplaythrough = () => this.audio.play()
+      this.renderSong()
       this.playStatus()
    }
 
@@ -94,9 +95,29 @@ class Player {
       const length = this.songList.length
       this.currenIndex = (length + this.currenIndex + 1) % length
       this.audio.src = this.songList[this.currenIndex].url
-      console.log(this.audio)
-      this.audio.oncanplaythrough = ()=>this.audio.play()
+      this.audio.oncanplaythrough = () => this.audio.play()
+      this.renderSong()
       this.playStatus()
+   }
+
+   loadLyrics() {
+      const el = this.songList[this.currenIndex]
+      fetch(el.lyric)
+         .then(res => res.json())
+         .then(data => {
+            console.log(data.lrc.lyric)
+         })
+
+   }
+
+   renderSong() {
+      const el = this.songList[this.currenIndex]
+      console.log(el)
+      const header = this.root.querySelector('.header h1')
+      const author = this.root.querySelector('.header p')
+      header.innerText = el.title
+      author.innerText = el.author + '-' + el.albumn
+      this.loadLyrics()
    }
 }
 
