@@ -118,7 +118,18 @@ class Player {
       header.innerText = el.title
       author.innerText = el.author + '-' + el.albumn
       this.loadLyrics()
+      this.lyricToCenter(this.root.querySelector('.container .current'))
+   }
+
+   lyricToCenter(node) {
+      const el = this.root.querySelector('.panels .container')
+      const setTop = node.offsetTop
+      const setHeight = this.root.querySelector('.panels').offsetHeight / 2
+      const offSet = setTop - setHeight
+      const moveSet = offSet > 0 ? offSet : 0
+      el.style.transform = `translateY(-${moveSet}px)`
+      console.log(this.root.querySelectorAll('.container p'))
    }
 }
 
-new Player('#player')
+window.p = new Player('#player')
