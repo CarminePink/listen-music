@@ -16,6 +16,8 @@ class Player {
       this.songList = []
       this.currenIndex = 0
       this.audio = new Audio()
+      this.lyricIndex = -1
+      this.lyricsArr = []
       this.start()
       this.bind()
    }
@@ -67,6 +69,12 @@ class Player {
          panelPage.classList.remove('panel1')
          panelPage.classList.add('panel2')
       })
+
+      this.audio.ontimeupdate = function () {
+         //console.log(parseInt(self.audio.currentTime * 1000))
+         self.locateLyric()
+         self.setProgressBar()
+      }
    }
 
    playStatus() {
@@ -106,6 +114,7 @@ class Player {
          .then(res => res.json())
          .then(data => {
             console.log(data.lrc.lyric)
+            this.setLyrics(data.lrc.lyric)
          })
 
    }
@@ -117,8 +126,13 @@ class Player {
       const author = this.root.querySelector('.header p')
       header.innerText = el.title
       author.innerText = el.author + '-' + el.albumn
+      this.audio.onloadedmetadata = () => {
+         const songTime = this.audio.duration
+         this.root.querySelector('.time-end').innerText = this.formateTime(songTime)
+      }
+
       this.loadLyrics()
-      this.lyricToCenter(this.root.querySelector('.container .current'))
+      //this.lyricToCenter(this.root.querySelector('.container .current'))
    }
 
    lyricToCenter(node) {
@@ -128,8 +142,88 @@ class Player {
       const offSet = setTop - setHeight
       const moveSet = offSet > 0 ? offSet : 0
       el.style.transform = `translateY(-${moveSet}px)`
-      console.log(this.root.querySelectorAll('.container p'))
+
+      this.root.querySelectorAll('.container p')
+         .forEach((item) => item.classList.remove('current')
+         )
+      node.classList.add('current')
    }
+
+   setLyrics(lyrics) {
+      let fragment = document.createDocumentFragment()
+      let lyricsRes = []
+      this.lyricsArr = lyricsRes
+      lyrics.split(/\n/)
+         .filter((item) => item.match(/\[.+?\]/))
+         .forEach((line) => {
+            let str = line.replace(/\[.+?\]/g, '')
+            line.match(/\[.+?\]/g).forEach((t) => {
+               t = t.replace(/[\[\]]/g, '')
+               let time = parseInt(t.slice(0, 2)) * 60 * 1000 +
+                  parseInt(t.slice(3, 5)) * 1000 +
+                  parseInt(t.slice(6))
+               lyricsRes.push([time, str])
+            })
+         })
+      lyricsRes.forEach((item, index) => {
+         if (item[1] === '') {
+            lyricsRes.splice(index, 1)
+         }
+      })
+      lyricsRes.sort((a, b) => {
+         if (a[0] > b[0]) {
+            return 1
+         } else {
+            return -1
+         }
+      })
+      console.log(lyricsRes)
+      lyricsRes
+         .filter((item) => item[1].trim() !== '')
+         .forEach((item) => {
+            const el = document.createElement('p')
+            el.setAttribute('song-time', item[0])
+            el.innerText = item[1]
+            fragment.appendChild(el)
+         })
+
+      const el = this.root.querySelector('.container')
+      el.innerText = ''
+      el.appendChild(fragment)
+
+   }
+
+   locateLyric() {
+      const currentLyricTime = parseInt(this.audio.currentTime * 1000)
+      const nextLyricTime = this.lyricsArr[this.lyricIndex + 1] ? this.lyricsArr[this.lyricIndex + 1][0] : ''
+      if (currentLyricTime > nextLyricTime && this.lyricIndex < this.lyricsArr.length - 1) {
+         this.lyricIndex++
+         let el = this.root.querySelector(`[song-time ="${this.lyricsArr[this.lyricIndex][0]}"]`)
+         console.log(el)
+         console.log(el.offsetTop)
+         this.lyricToCenter(el)
+         this.root.querySelectorAll('.lyrics p')[0].innerText = this.lyricsArr[this.lyricIndex] ? this.lyricsArr[this.lyricIndex][1] : ''
+         this.root.querySelectorAll('.lyrics p')[1].innerText = this.lyricsArr[this.lyricIndex + 1] ? this.lyricsArr[this.lyricIndex + 1][1] : ''
+      }
+   }
+
+   setProgressBar() {
+      let timePercent = (this.audio.currentTime * 100) / this.audio.duration + '%'
+      const el = this.root.querySelector('.area-bar .bar .progress')
+      const initTime = this.root.querySelector('.time-start')
+      el.style.width = timePercent
+      initTime.innerText = this.formateTime(this.audio.currentTime)
+   }
+
+   formateTime(totalTime) {
+      let minutes = parseInt(totalTime / 60)
+      let seconds = parseInt(totalTime % 60)
+      minutes = minutes >= 10 ? minutes : '0' + minutes
+      seconds = seconds >= 10 ? seconds : '0' + seconds
+      return minutes + ':' + seconds
+   }
+
+
 }
 
-window.p = new Player('#player')
+new Player('#player')

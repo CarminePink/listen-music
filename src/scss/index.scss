@@ -137,10 +137,13 @@ $color3: #1140fc;
          align-items: center;
          line-height: 2;
          overflow: hidden;
-
          .container {
-            transform: translateY(-100px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             p {
+               margin: 0 5px;
                font-size: 14px;
                color: $color1;
 
@@ -186,7 +189,7 @@ $color3: #1140fc;
             border-radius: 2px;
 
             .progress {
-               width: 50%;
+               width: 0;
                height: 100%;
                border-radius: 2px;
                position: relative;
@@ -196,7 +199,7 @@ $color3: #1140fc;
                   content: '';
                   display: block;
                   position: absolute;
-                  right: 0;
+                  right: -7px;
                   top: -7px;
                   width: 16px;
                   height: 16px;
