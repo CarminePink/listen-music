@@ -63,11 +63,15 @@ class Player {
          const panelPage = document.querySelector('.panels')
          panelPage.classList.remove('panel2')
          panelPage.classList.add('panel1')
+         self.root.querySelectorAll('.balls span')[1].classList.remove('current')
+         self.root.querySelectorAll('.balls span')[0].classList.add('current')
       })
       swipe.on('swipeRight', () => {
          const panelPage = document.querySelector('.panels')
          panelPage.classList.remove('panel1')
          panelPage.classList.add('panel2')
+         self.root.querySelectorAll('.balls span')[0].classList.remove('current')
+         self.root.querySelectorAll('.balls span')[1].classList.add('current')
       })
 
       this.audio.ontimeupdate = function () {
