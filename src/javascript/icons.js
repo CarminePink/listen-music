@@ -376,7 +376,7 @@ string.innerHTML = `
     </g>
 </symbol>
   <?xml version="1.0" encoding="UTF-8"?>
-<symbol id="icon-single" width="24px" height="24px" viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<symbol id="icon-single" width="28px" height="28px" viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
     <title>循环模式 单曲</title>
     <desc>Created with Sketch.</desc>

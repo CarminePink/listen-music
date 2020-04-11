@@ -14,6 +14,7 @@ class Player {
    constructor(node) {
       this.root = typeof node === 'string' ? document.querySelector(node) : node
       this.songList = []
+      this.songOrder = 'order'
       this.currenIndex = 0
       this.audio = new Audio()
       this.lyricIndex = -1
@@ -58,6 +59,29 @@ class Player {
       preButton.onclick = function () {
          self.playPreSong()
       }
+
+      const orderButton = this.root.querySelector('.btn-order')
+      orderButton.onclick = function () {
+         if (this.classList.contains('ordering')) {
+            this.classList.remove('ordering')
+            this.classList.add('inordering')
+            this.querySelector('use').setAttribute('xlink:href', '#icon-inorder')
+            self.songOrder = 'inorder'
+         } else if (this.classList.contains('inordering')) {
+            this.classList.remove('inordering')
+            this.classList.add('singling')
+            this.querySelector('use').setAttribute('xlink:href', '#icon-single')
+            self.songOrder = 'single'
+         } else if (this.classList.contains('singling')) {
+            this.classList.remove('singling')
+            this.classList.add('ordering')
+            this.querySelector('use').setAttribute('xlink:href', '#icon-circle')
+            self.songOrder = 'order'
+         }
+
+      }
+
+
       let swipe = new Swiper(document.querySelector('.panels'))
       swipe.on('swipeLeft', () => {
          const panelPage = document.querySelector('.panels')
@@ -78,7 +102,12 @@ class Player {
          //console.log(parseInt(self.audio.currentTime * 1000))
          self.locateLyric()
          self.setProgressBar()
+         if (self.audio.ended === true) {
+            console.log('ended')
+            self.setSongOrder()
+         }
       }
+
    }
 
    playStatus() {
@@ -94,7 +123,7 @@ class Player {
       }
    }
 
-   playNextSong() {
+   playPreSong() {
       const length = this.songList.length
       this.currenIndex = (length + this.currenIndex - 1) % length
       this.audio.src = this.songList[this.currenIndex].url
@@ -103,7 +132,7 @@ class Player {
       this.playStatus()
    }
 
-   playPreSong() {
+   playNextSong() {
       const length = this.songList.length
       this.currenIndex = (length + this.currenIndex + 1) % length
       this.audio.src = this.songList[this.currenIndex].url
@@ -211,6 +240,25 @@ class Player {
       }
    }
 
+   setSongOrder() {
+      if (this.songOrder === 'order') {
+         const length = this.songList.length
+         this.currenIndex = (length + this.currenIndex + 1) % length
+         this.audio.src = this.songList[this.currenIndex].url
+         this.audio.oncanplaythrough = () => this.audio.play()
+         this.lyricIndex = -1
+         this.renderSong()
+         this.playStatus()
+      }else if(this.songOrder === 'single'){
+         this.currenIndex = this.currenIndex
+         this.audio.src = this.songList[this.currenIndex].url
+         this.audio.oncanplaythrough = () => this.audio.play()
+         this.playStatus()
+      }else if(this.songOrder ==='inorder'){
+         const length = this.songList.length
+      }
+   }
+
    setProgressBar() {
       let timePercent = (this.audio.currentTime * 100) / this.audio.duration + '%'
       const el = this.root.querySelector('.area-bar .bar .progress')
@@ -226,7 +274,6 @@ class Player {
       seconds = seconds >= 10 ? seconds : '0' + seconds
       return minutes + ':' + seconds
    }
-
 
 }
 
