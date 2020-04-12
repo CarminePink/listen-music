@@ -98,6 +98,31 @@ class Player {
          self.root.querySelectorAll('.balls span')[1].classList.add('current')
       })
 
+      const progress = this.root.querySelector('.progress')
+      const proBall = this.root.querySelector('.progress .progress-ball')
+      const bar = this.root.querySelector('.bar')
+      const barSetLeft = bar.offsetLeft
+      const barSetWidth = bar.offsetWidth
+      proBall.ontouchstart = (e) => {
+         const posX = e.touches[0].clientX
+      }
+      proBall.ontouchmove = (e) => {
+         const newPosX = e.touches[0].clientX
+         let moveX = newPosX - barSetLeft
+         const percentX = (moveX / barSetWidth) * 100 + '%'
+         progress.style.width = percentX
+      }
+
+      bar.ontouchstart = (e) => {
+         const posX = e.touches[0].clientX
+         console.log(posX)
+         if (posX - barSetLeft >= 10) {
+            const percentX = ((posX - barSetLeft) / barSetWidth) * 100 + '%'
+            progress.style.width = percentX
+         }
+      }
+
+
       this.audio.ontimeupdate = function () {
          //console.log(parseInt(self.audio.currentTime * 1000))
          self.locateLyric()
@@ -248,16 +273,16 @@ class Player {
          this.lyricIndex = -1
          this.renderSong()
          this.playStatus()
-      }else if(this.songOrder === 'single'){
+      } else if (this.songOrder === 'single') {
          this.currenIndex = this.currenIndex
          this.audio.src = this.songList[this.currenIndex].url
          this.audio.oncanplaythrough = () => this.audio.play()
          this.lyricIndex = -1
          this.renderSong()
          this.playStatus()
-      }else if(this.songOrder ==='inorder'){
+      } else if (this.songOrder === 'inorder') {
          const length = this.songList.length
-         this.currenIndex = this.randomIndex(0,5)
+         this.currenIndex = this.randomIndex(0, 5)
          this.audio.src = this.songList[this.currenIndex].url
          this.audio.oncanplaythrough = () => this.audio.play()
          this.lyricIndex = -1
@@ -282,8 +307,8 @@ class Player {
       return minutes + ':' + seconds
    }
 
-   randomIndex(min,max){
-      return Math.floor(Math.random()*(max-min)+min)
+   randomIndex(min, max) {
+      return Math.floor(Math.random() * (max - min) + min)
    }
 }
 

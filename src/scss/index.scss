@@ -195,7 +195,7 @@ $color3: #1140fc;
                position: relative;
                background: $color2;
 
-               &:after {
+               .progress-ball {
                   content: '';
                   display: block;
                   position: absolute;
