@@ -103,7 +103,6 @@ class Player {
          self.locateLyric()
          self.setProgressBar()
          if (self.audio.ended === true) {
-            console.log('ended')
             self.setSongOrder()
          }
       }
@@ -253,9 +252,17 @@ class Player {
          this.currenIndex = this.currenIndex
          this.audio.src = this.songList[this.currenIndex].url
          this.audio.oncanplaythrough = () => this.audio.play()
+         this.lyricIndex = -1
+         this.renderSong()
          this.playStatus()
       }else if(this.songOrder ==='inorder'){
          const length = this.songList.length
+         this.currenIndex = this.randomIndex(0,5)
+         this.audio.src = this.songList[this.currenIndex].url
+         this.audio.oncanplaythrough = () => this.audio.play()
+         this.lyricIndex = -1
+         this.renderSong()
+         this.playStatus()
       }
    }
 
@@ -275,6 +282,9 @@ class Player {
       return minutes + ':' + seconds
    }
 
+   randomIndex(min,max){
+      return Math.floor(Math.random()*(max-min)+min)
+   }
 }
 
 new Player('#player')
