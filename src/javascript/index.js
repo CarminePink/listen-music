@@ -20,6 +20,7 @@ class Player {
       this.lyricIndex = -1
       this.lyricsArr = []
       this.posArr = []
+      this.barPosArr = []
       this.start()
       this.bind()
    }
@@ -106,10 +107,12 @@ class Player {
       const barSetWidth = bar.offsetWidth
       proBall.ontouchstart = (e) => {
          e.preventDefault()
+         e.stopPropagation()
          const posX = e.touches[0].clientX
       }
       proBall.ontouchmove = (e) => {
          e.preventDefault()
+         e.stopPropagation()
          const newPosX = e.touches[0].clientX
          this.posArr = [newPosX]
          let moveX = newPosX - barSetLeft
@@ -117,7 +120,10 @@ class Player {
          progress.style.width = percentX
       }
       proBall.ontouchend = (e) => {
+         e.preventDefault()
+         e.stopPropagation()
          console.log(this.audio.duration) //number
+         console.log(this.lyricIndex)
          const percent = ((this.posArr[0] - barSetLeft) / barSetWidth)
          const num = Math.fround(percent)
          this.audio.currentTime = this.audio.duration * num
@@ -131,17 +137,21 @@ class Player {
       bar.ontouchstart = (e) => {
          e.preventDefault()
          const posX = e.touches[0].clientX
-         console.log(posX)
+         this.barPosArr = [posX]
          if (posX - barSetLeft >= 10) {
             const percentX = ((posX - barSetLeft) / barSetWidth) * 100 + '%'
             progress.style.width = percentX
-            this.audio.currentTime = this.audio.duration * ((posX - barSetLeft) / barSetWidth)
-            this.playStatus()
-            this.audio.oncanplaythrough = ()=> this.audio.play()
          }
       }
-
-
+      bar.ontouchend = (e) => {
+         e.preventDefault()
+         this.audio.currentTime = this.audio.duration * ((this.barPosArr[0] - barSetLeft) / barSetWidth)
+         this.playStatus()
+         const el = this.root.querySelector('.actions .btn-play-pause')
+         if (el.classList.contains('playing')) {
+            this.audio.oncanplaythrough = () => this.audio.play()
+         }
+      }
 
 
       this.audio.ontimeupdate = function () {
