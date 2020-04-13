@@ -21,6 +21,8 @@ class Player {
       this.lyricsArr = []
       this.posArr = []
       this.barPosArr = []
+      this.timeArr = []
+      this.barTimeArr = []
       this.start()
       this.bind()
    }
@@ -122,8 +124,7 @@ class Player {
       proBall.ontouchend = (e) => {
          e.preventDefault()
          e.stopPropagation()
-         console.log(this.audio.duration) //number
-         console.log(this.lyricIndex)
+         this.timeArr = []
          const percent = ((this.posArr[0] - barSetLeft) / barSetWidth)
          const num = Math.fround(percent)
          this.audio.currentTime = this.audio.duration * num
@@ -131,11 +132,11 @@ class Player {
          const el = this.root.querySelector('.actions .btn-play-pause')
          if (el.classList.contains('playing')) {
             this.audio.oncanplaythrough = () => this.audio.play()
+            this.locateProgrssLyric(this.timeArr)
          }
       }
 
       bar.ontouchstart = (e) => {
-         e.preventDefault()
          const posX = e.touches[0].clientX
          this.barPosArr = [posX]
          if (posX - barSetLeft >= 10) {
@@ -145,11 +146,13 @@ class Player {
       }
       bar.ontouchend = (e) => {
          e.preventDefault()
+         this.barTimeArr = []
          this.audio.currentTime = this.audio.duration * ((this.barPosArr[0] - barSetLeft) / barSetWidth)
          this.playStatus()
          const el = this.root.querySelector('.actions .btn-play-pause')
          if (el.classList.contains('playing')) {
             this.audio.oncanplaythrough = () => this.audio.play()
+            this.locateProgrssLyric(this.barTimeArr)
          }
       }
 
@@ -294,6 +297,22 @@ class Player {
          this.lyricToCenter(el)
          this.root.querySelectorAll('.lyrics p')[0].innerText = this.lyricsArr[this.lyricIndex] ? this.lyricsArr[this.lyricIndex][1] : ''
          this.root.querySelectorAll('.lyrics p')[1].innerText = this.lyricsArr[this.lyricIndex + 1] ? this.lyricsArr[this.lyricIndex + 1][1] : ''
+      }
+   }
+
+   locateProgrssLyric(arr){
+      console.log(this.audio.currentTime)
+      this.lyricsArr.forEach((item, index) => {
+         if (item[0] > (this.audio.currentTime * 1000)) {
+            arr.push(item[0])
+         }
+      })
+      if (arr.length > 1) {
+         arr.splice(1, arr.length - 1)
+         console.log(arr)
+         const lyIndex = this.lyricsArr.findIndex((item) => item[0] === arr[0])
+         console.log(lyIndex)
+         this.lyricIndex = lyIndex - 1
       }
    }
 
