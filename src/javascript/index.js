@@ -19,6 +19,7 @@ class Player {
       this.audio = new Audio()
       this.lyricIndex = -1
       this.lyricsArr = []
+      this.posArr = []
       this.start()
       this.bind()
    }
@@ -104,23 +105,43 @@ class Player {
       const barSetLeft = bar.offsetLeft
       const barSetWidth = bar.offsetWidth
       proBall.ontouchstart = (e) => {
+         e.preventDefault()
          const posX = e.touches[0].clientX
       }
       proBall.ontouchmove = (e) => {
+         e.preventDefault()
          const newPosX = e.touches[0].clientX
+         this.posArr = [newPosX]
          let moveX = newPosX - barSetLeft
          const percentX = (moveX / barSetWidth) * 100 + '%'
          progress.style.width = percentX
       }
+      proBall.ontouchend = (e) => {
+         console.log(this.audio.duration) //number
+         const percent = ((this.posArr[0] - barSetLeft) / barSetWidth)
+         const num = Math.fround(percent)
+         this.audio.currentTime = this.audio.duration * num
+         this.playStatus()
+         const el = this.root.querySelector('.actions .btn-play-pause')
+         if (el.classList.contains('playing')) {
+            this.audio.oncanplaythrough = () => this.audio.play()
+         }
+      }
 
       bar.ontouchstart = (e) => {
+         e.preventDefault()
          const posX = e.touches[0].clientX
          console.log(posX)
          if (posX - barSetLeft >= 10) {
             const percentX = ((posX - barSetLeft) / barSetWidth) * 100 + '%'
             progress.style.width = percentX
+            this.audio.currentTime = this.audio.duration * ((posX - barSetLeft) / barSetWidth)
+            this.playStatus()
+            this.audio.oncanplaythrough = ()=> this.audio.play()
          }
       }
+
+
 
 
       this.audio.ontimeupdate = function () {
@@ -148,6 +169,7 @@ class Player {
    }
 
    playPreSong() {
+      this.lyricIndex = -1
       const length = this.songList.length
       this.currenIndex = (length + this.currenIndex - 1) % length
       this.audio.src = this.songList[this.currenIndex].url
@@ -157,6 +179,7 @@ class Player {
    }
 
    playNextSong() {
+      this.lyricIndex = -1
       const length = this.songList.length
       this.currenIndex = (length + this.currenIndex + 1) % length
       this.audio.src = this.songList[this.currenIndex].url
@@ -282,7 +305,7 @@ class Player {
          this.playStatus()
       } else if (this.songOrder === 'inorder') {
          const length = this.songList.length
-         this.currenIndex = this.randomIndex(0, 5)
+         this.currenIndex = this.randomIndex(0, this.songList.length)
          this.audio.src = this.songList[this.currenIndex].url
          this.audio.oncanplaythrough = () => this.audio.play()
          this.lyricIndex = -1
