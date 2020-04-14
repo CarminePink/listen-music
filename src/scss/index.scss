@@ -230,6 +230,32 @@ $color3: #1140fc;
       }
    }
 
+   .songList{
+      border: 1px solid red;
+      border-radius: 20px;
+      position: absolute;
+      padding: 10px 10px;
+      background: $color;
+      min-width: 90vw;
+      min-height: 400px;
+      bottom: 20px;
+      left: 50%;
+      margin-left: -45vw;
+      //display: none;
+      .selectOptions{
+         display: flex;
+         flex-direction: row;
+         justify-content: space-between;
+         margin: 8px 0;
+      }
+      .playLists{
+         margin-top: 20px;
+         li{
+            margin-bottom: 10px;
+         }
+      }
+   }
+
 }
 
 @keyframes rotate {
