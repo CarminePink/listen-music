@@ -5,6 +5,7 @@ $color2: #d562ae;
 $color2-dark: darken($color2, 20%);
 $color2-darker: darken($color2, 40%);
 $color3: #1140fc;
+$color4:#111921;
 
 * {
    margin: 0;
@@ -231,7 +232,7 @@ $color3: #1140fc;
    }
 
    .songList{
-      border: 1px solid red;
+      z-index: 3;
       border-radius: 20px;
       position: absolute;
       padding: 10px 10px;
@@ -241,7 +242,7 @@ $color3: #1140fc;
       bottom: 20px;
       left: 50%;
       margin-left: -45vw;
-      //display: none;
+      display: none;
       .selectOptions{
          display: flex;
          flex-direction: row;
@@ -256,6 +257,17 @@ $color3: #1140fc;
       }
    }
 
+   .coverBackground{
+      z-index: 2;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: $color4;
+      filter: opacity(80%);
+      opacity: 0.7;
+      display: none;
+   }
 }
 
 @keyframes rotate {

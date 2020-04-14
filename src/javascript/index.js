@@ -135,7 +135,6 @@ class Player {
             this.locateProgrssLyric(this.timeArr)
          }
       }
-
       bar.ontouchstart = (e) => {
          const posX = e.touches[0].clientX
          this.barPosArr = [posX]
@@ -154,6 +153,26 @@ class Player {
             this.audio.oncanplaythrough = () => this.audio.play()
             this.locateProgrssLyric(this.barTimeArr)
          }
+      }
+
+
+      const musicListButton = this.root.querySelector('.btn-music-list')
+      const musicList = this.root.querySelector('.songList')
+      const cover = this.root.querySelector('.coverBackground')
+      musicListButton.onclick = (e) => {
+         musicList.classList.remove('notDisplay')
+         musicList.classList.add('displaying')
+         musicList.style.display = 'block'
+         cover.style.display = 'block'
+         cover.style.height = '100vh'
+
+      }
+      cover.ontouchstart = (e)=>{
+         e.preventDefault()
+         musicList.classList.remove('displaying')
+         musicList.classList.add('notDisplay')
+         musicList.style.display = 'none'
+         cover.style.display = 'none'
       }
 
 
