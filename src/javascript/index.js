@@ -300,7 +300,7 @@ class Player {
       }
    }
 
-   locateProgrssLyric(arr){
+   locateProgrssLyric(arr) {
       console.log(this.audio.currentTime)
       this.lyricsArr.forEach((item, index) => {
          if (item[0] > (this.audio.currentTime * 1000)) {
@@ -314,6 +314,10 @@ class Player {
          console.log(lyIndex)
          this.lyricIndex = lyIndex - 1
       }
+      this.root.querySelectorAll('.lyrics p').forEach((item) => item.classList.remove('current'))
+      this.root.querySelectorAll('.lyrics p')[0].innerText = this.lyricsArr[this.lyricIndex] ? this.lyricsArr[this.lyricIndex][1] : ''
+      this.root.querySelectorAll('.lyrics p')[1].innerText = this.lyricsArr[this.lyricIndex + 1] ? this.lyricsArr[this.lyricIndex + 1][1] : ''
+      this.root.querySelectorAll('.lyrics p')[0].classList.add('current')
    }
 
    setSongOrder() {
