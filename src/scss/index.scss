@@ -6,6 +6,7 @@ $color2-dark: darken($color2, 20%);
 $color2-darker: darken($color2, 40%);
 $color3: #1140fc;
 $color4:#111921;
+$color5:#666;
 
 * {
    margin: 0;
@@ -277,8 +278,23 @@ $color4:#111921;
       }
       .playLists{
          margin-top: 20px;
-         li{
+         div{
+            min-height: 24px;
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            span{
+               font-size: 13px;
+               color: $color5;
+               margin-left: 4px;
+            }
+            svg{
+               margin-left: 10px;
+               width: 18px;
+               height: 18px;
+            }
          }
       }
    }
