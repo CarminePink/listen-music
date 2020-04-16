@@ -175,6 +175,23 @@ class Player {
          cover.style.display = 'none'
       }
 
+      const songListOrder = this.root.querySelector('.selectPlayOrder')
+      const songListOrderSvg = songListOrder.children[0]
+      songListOrder.onclick = () => {
+         songListOrder.removeChild(songListOrder.children[1])
+         if (songListOrderSvg.classList.contains('order')) {
+            this.switchSongListOrder('order','inOrder','#icon-suiji')
+            this.switchOrderText('随机播放')
+         } else if (songListOrderSvg.classList.contains('inOrder')) {
+            this.switchSongListOrder('inOrder','single','#icon-danquxunhuan')
+            this.switchOrderText('单曲循环')
+         } else if (songListOrderSvg.classList.contains('single')) {
+            this.switchSongListOrder('single','order','#icon-liebiaoxunhuan')
+            this.switchOrderText('列表循环')
+         }
+
+      }
+
 
       this.audio.ontimeupdate = function () {
          //console.log(parseInt(self.audio.currentTime * 1000))
@@ -421,8 +438,10 @@ class Player {
             const content = item.children[0].textContent
             item.style.color = 'black'
             item.children[1].style.color = 'black'
-            if(item.children[2]){item.removeChild(item.children[2])}
-            if(content  === currentSong){
+            if (item.children[2]) {
+               item.removeChild(item.children[2])
+            }
+            if (content === currentSong) {
                item.style.color = 'red'
                item.children[1].style.color = 'red'
                item.appendChild(this.createSvg())
@@ -430,6 +449,22 @@ class Player {
          })
       }
 
+   }
+
+   switchSongListOrder(rmClass, addClass, iconID) {
+      const songListOrder = this.root.querySelector('.selectPlayOrder')
+      const songListOrderSvg = songListOrder.children[0]
+      const songListOrderUse = songListOrderSvg.querySelector('use')
+      songListOrderSvg.classList.remove(rmClass)
+      songListOrderSvg.classList.add(addClass)
+      songListOrderUse.setAttribute('xlink:href', iconID)
+   }
+
+   switchOrderText(content) {
+      const songListOrder = this.root.querySelector('.selectPlayOrder')
+      const el = document.createElement('span')
+      el.innerText = content
+      songListOrder.appendChild(el)
    }
 
    formateTime(totalTime) {
