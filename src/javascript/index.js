@@ -65,22 +65,24 @@ class Player {
       }
 
       const orderButton = this.root.querySelector('.btn-order')
-      orderButton.onclick = function () {
-         if (this.classList.contains('ordering')) {
-            this.classList.remove('ordering')
-            this.classList.add('inordering')
-            this.querySelector('use').setAttribute('xlink:href', '#icon-inorder')
-            self.songOrder = 'inorder'
-         } else if (this.classList.contains('inordering')) {
-            this.classList.remove('inordering')
-            this.classList.add('singling')
-            this.querySelector('use').setAttribute('xlink:href', '#icon-single')
-            self.songOrder = 'single'
-         } else if (this.classList.contains('singling')) {
-            this.classList.remove('singling')
-            this.classList.add('ordering')
-            this.querySelector('use').setAttribute('xlink:href', '#icon-circle')
-            self.songOrder = 'order'
+      orderButton.onclick = ()=>{
+         const songListOrder = this.root.querySelector('.selectPlayOrder')
+         songListOrder.removeChild(songListOrder.children[1])
+         if (orderButton.classList.contains('ordering')) {
+            this.switchButtonOrder('ordering', 'inordering', '#icon-inorder')
+            this.switchSongListOrder('order', 'inOrder', '#icon-suiji')
+            this.switchOrderText('随机播放')
+            this.songOrder = 'inorder'
+         } else if (orderButton.classList.contains('inordering')) {
+            this.switchButtonOrder('inordering', 'singling', '#icon-single')
+            this.switchSongListOrder('inOrder', 'single', '#icon-danquxunhuan')
+            this.switchOrderText('单曲循环')
+            this.songOrder = 'single'
+         } else if (orderButton.classList.contains('singling')) {
+            this.switchButtonOrder('singling', 'ordering', '#icon-circle')
+            this.switchSongListOrder('single', 'order', '#icon-liebiaoxunhuan')
+            this.switchOrderText('列表循环')
+            this.songOrder = 'order'
          }
 
       }
@@ -180,14 +182,20 @@ class Player {
       songListOrder.onclick = () => {
          songListOrder.removeChild(songListOrder.children[1])
          if (songListOrderSvg.classList.contains('order')) {
-            this.switchSongListOrder('order','inOrder','#icon-suiji')
+            this.switchSongListOrder('order', 'inOrder', '#icon-suiji')
+            this.switchButtonOrder('ordering', 'inordering', '#icon-inorder')
             this.switchOrderText('随机播放')
+            this.songOrder = 'inorder'
          } else if (songListOrderSvg.classList.contains('inOrder')) {
-            this.switchSongListOrder('inOrder','single','#icon-danquxunhuan')
+            this.switchSongListOrder('inOrder', 'single', '#icon-danquxunhuan')
+            this.switchButtonOrder('inordering', 'singling', '#icon-single')
             this.switchOrderText('单曲循环')
+            this.songOrder = 'single'
          } else if (songListOrderSvg.classList.contains('single')) {
-            this.switchSongListOrder('single','order','#icon-liebiaoxunhuan')
+            this.switchSongListOrder('single', 'order', '#icon-liebiaoxunhuan')
+            this.switchButtonOrder('singling', 'ordering', '#icon-circle')
             this.switchOrderText('列表循环')
+            this.songOrder = 'order'
          }
 
       }
@@ -448,6 +456,15 @@ class Player {
             }
          })
       }
+
+   }
+
+   switchButtonOrder(rmClass, addClass, iconID) {
+      const orderButton = this.root.querySelector('.btn-order')
+      const orderSvg = orderButton.querySelector('use')
+      orderButton.classList.remove(rmClass)
+      orderButton.classList.add(addClass)
+      orderSvg.setAttribute('xlink:href', iconID)
 
    }
 
