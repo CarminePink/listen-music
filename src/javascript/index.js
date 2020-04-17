@@ -1,7 +1,6 @@
 import './icons.js'
 import Swiper from './swiper.js'
 //http://carminepink.xyz/data-mock/huawei-music/music-list.json
-//https://jirengu.github.io/data-mock/huawei-music/music-list.json
 
 const $ = (selector) => {
    document.querySelector(selector)
