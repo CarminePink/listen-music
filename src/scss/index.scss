@@ -296,6 +296,7 @@ $color5:#666;
       }
       .playLists{
          margin-top: 20px;
+         overflow: auto;
          div{
             min-height: 24px;
             margin-bottom: 20px;
