@@ -245,6 +245,18 @@ $color5:#666;
       left: 50%;
       margin-left: -45vw;
       display: none;
+
+      .listHeader{
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         span{
+            margin-left: 4px;
+            font-size: 15px;
+            color: $color5;
+         }
+      }
+
       .selectOptions{
          display: flex;
          flex-direction: row;

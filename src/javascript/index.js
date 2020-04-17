@@ -400,8 +400,10 @@ class Player {
    }
 
    renderSonglist() {
+      const listTitle = this.root.querySelector('.listHeader span')
       const currentSong = this.songList[this.currenIndex].title
       let fragment = document.createDocumentFragment()
+      listTitle.innerText = `(${this.songList.length})`
       this.songList.forEach((item, index) => {
          const elDiv = document.createElement('div')
          const elP = document.createElement('p')
