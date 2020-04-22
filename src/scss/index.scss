@@ -80,6 +80,43 @@ $color5:#666;
          flex-direction: column;
          justify-content: center;
          align-items: center;
+         position: relative;
+
+         .volume{
+            position: absolute;
+            top: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            transform: translateX(-14px);
+            svg{
+               width: 24px;
+               height: 24px;
+               margin: 0 4px;
+            }
+            .volume-bar{
+               height: 4px;
+               width: 254px;
+               background: $color3;
+               border-radius: 2px;
+               .volume-progress{
+                  position: relative;
+                  width: 50%;
+                  height: 100%;
+                  background: $color2;
+                  border-radius: 2px;
+                  .volume-ball{
+                     position: absolute;
+                     right: -7px;
+                     top: -7px;
+                     width: 16px;
+                     height: 16px;
+                     background: url("../svg/progress.svg") 0 0 no-repeat;
+                     background-size: contain;
+                  }
+               }
+            }
+         }
 
          .effect {
             position: relative;
