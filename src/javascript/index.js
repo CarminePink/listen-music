@@ -289,7 +289,7 @@ class Player {
       fetch(el.lyric)
          .then(res => res.json())
          .then(data => {
-            console.log(data.lrc.lyric)
+            //console.log(data.lrc.lyric)
             this.setLyrics(data.lrc.lyric)
          })
 
@@ -353,7 +353,7 @@ class Player {
             return -1
          }
       })
-      console.log(lyricsRes)
+      //console.log(lyricsRes)
       lyricsRes
          .filter((item) => item[1].trim() !== '')
          .forEach((item) => {
