@@ -22,6 +22,7 @@ class Player {
       this.barPosArr = []
       this.timeArr = []
       this.barTimeArr = []
+      this.volumePercnt = 0.5
       this.start()
       this.bind()
    }
@@ -33,6 +34,7 @@ class Player {
             console.log(data)
             this.songList = data
             this.audio.src = this.songList[this.currenIndex].url
+            this.audio.volume = 0.5
             this.renderSong()
          })
    }
@@ -64,7 +66,7 @@ class Player {
       }
 
       const orderButton = this.root.querySelector('.btn-order')
-      orderButton.onclick = ()=>{
+      orderButton.onclick = () => {
          const songListOrder = this.root.querySelector('.selectPlayOrder')
          songListOrder.removeChild(songListOrder.children[1])
          if (orderButton.classList.contains('ordering')) {
@@ -199,6 +201,44 @@ class Player {
 
       }
 
+      const volumeBar = this.root.querySelector('.volume-bar')
+      const volumeEl = this.root.querySelector('.volume')
+      const volumePro = this.root.querySelector('.volume-progress')
+      const volumeSvg = this.root.querySelector('.volume-icon')
+      volumeBar.ontouchstart = (e) => {
+         e.preventDefault()
+         const posX = e.touches[0].clientX
+         const volumeOffSetLeft = volumeEl.offsetLeft
+         let setLeftSum = posX - volumeOffSetLeft
+         const percenX = (setLeftSum / volumeBar.offsetWidth) * 100
+         this.volumePercnt = (setLeftSum / volumeBar.offsetWidth)
+         volumePro.style.width = percenX + '%'
+      }
+      volumeBar.ontouchend = (e) => {
+         if(this.volumePercnt >=0){
+            if(volumeSvg.classList.contains('mute')){
+               this.adjustVolume('mute','notMute','#icon-volume')
+               this.audio.muted = false
+            }
+            this.audio.volume = this.volumePercnt
+         }
+         if(this.volumePercnt <= 0){
+            this.adjustVolume('notMute','mute','#icon-mute')
+            this.audio.muted = true
+         }
+      }
+      volumeSvg.onclick = () => {
+         if (volumeSvg.classList.contains('notMute')) {
+            this.adjustVolume('notMute','mute','#icon-mute')
+            this.audio.muted = true
+            volumePro.style.width = 0 + '%'
+         } else {
+            this.adjustVolume('mute','notMute','#icon-volume')
+            this.audio.muted = false
+            volumePro.style.width =(this.volumePercnt)*100 + '%'
+         }
+
+      }
 
       this.audio.ontimeupdate = function () {
          //console.log(parseInt(self.audio.currentTime * 1000))
@@ -483,6 +523,13 @@ class Player {
       const el = document.createElement('span')
       el.innerText = content
       songListOrder.appendChild(el)
+   }
+
+   adjustVolume(rmClass,addClass,iconID){
+      const volumeSvg = this.root.querySelector('.volume-icon')
+      volumeSvg.classList.remove(rmClass)
+      volumeSvg.classList.add(addClass)
+      volumeSvg.querySelector('use').setAttribute('xlink:href', iconID)
    }
 
    formateTime(totalTime) {
